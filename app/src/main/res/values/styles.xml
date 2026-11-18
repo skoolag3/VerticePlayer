@@ -1,0 +1,37 @@
+<resources>
+    <style name="VerticeTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#C5A3F5</item>
+        <item name="colorOnPrimary">#27163D</item>
+        <item name="colorPrimaryContainer">#3C2855</item>
+        <item name="colorOnPrimaryContainer">#EFDCFF</item>
+        <item name="colorSecondary">#CCC1DA</item>
+        <item name="colorSurface">#121117</item>
+        <item name="colorOnSurface">#E9E1ED</item>
+        <item name="colorSurfaceVariant">#29252F</item>
+        <item name="colorOnSurfaceVariant">#CAC1D0</item>
+        <item name="colorOutline">#746C7C</item>
+        <item name="materialAlertDialogTheme">@style/VerticeMaterialDialog</item>
+        <item name="bottomSheetDialogTheme">@style/VerticeBottomSheet</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#B58AE8</item>
+        <item name="android:windowBackground">#0D0E12</item>
+        <item name="android:colorBackground">#0D0E12</item>
+        <item name="android:textColorPrimary">@color/vertice_text_primary</item>
+        <item name="android:textColorSecondary">@color/vertice_text_secondary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="VerticeMaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">#211D29</item>
+        <item name="colorPrimary">#C5A3F5</item>
+    </style>
+    <style name="VerticeBottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="colorSurface">#211D29</item>
+    </style>
+    <style name="VerticeDialog" parent="android:style/Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">#B58AE8</item>
+        <item name="android:colorBackground">#1B1924</item>
+        <item name="android:textColorPrimary">@color/vertice_text_primary</item>
+        <item name="android:textColorSecondary">@color/vertice_text_secondary</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
+</resources>

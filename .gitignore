@@ -1,0 +1,11 @@
+/.gradle/
+**/build/
+*.log
+*.hprof
+*.apk
+*.idsig
+*.jks
+*.keystore
+local.properties
+/.idea/
+/com/
