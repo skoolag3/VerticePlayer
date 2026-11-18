@@ -481,12 +481,18 @@ public final class SpotifyLiveBridge {
             }
         }
 
-        if (host != null) {
-            sendMediaKey(host, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
-                () -> sendMediaKey(host, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE), 160);
+        if (host != null && spotifySession > 0) {
+            try {
+                directVirtualizer = new Virtualizer(EFFECT_PRIORITY, spotifySession);
+                if (directVirtualizer.hasControl()) {
+                    directDspEnabled = true;
+                    syncDirectDspParameters(host);
+                    if (directDspEnabled) return true;
+                }
+            } catch (RuntimeException ignored) { }
+            releaseEffectsOnly();
         }
-        directStatus = "Armado! Troque de faixa ou dê Play no Spotify para ativar a sessão.";
+        directStatus = "Aguardando sessão compatível. Inicie uma faixa no Spotify.";
         return false;
     }
 
@@ -530,6 +536,23 @@ public final class SpotifyLiveBridge {
     public static synchronized void syncDirectDspParameters(MainActivity host) {
         if (host != null && liveCamillaSyncEnabled && !camillaHostIp.isEmpty()) {
             pushConfigToSpotronPc(host, null);
+        }
+        if (directDspEnabled && directDsp == null && directVirtualizer != null && host != null) {
+            boolean active = host.mode != SpatialProcessor.OFF && host.intensity > 0
+                && (host.player == null || !host.player.isBypassEffects());
+            try {
+                if (active && directVirtualizer.getStrengthSupported()) {
+                    directVirtualizer.setStrength((short) Math.min(1000, host.intensity * 10));
+                }
+                if (directVirtualizer.setEnabled(active) != AudioEffect.SUCCESS
+                    || directVirtualizer.getEnabled() != active) throw new IllegalStateException();
+                directStatus = active ? "Espacialização básica ativa · Virtualizer do Android"
+                    : "Espacialização básica conectada · efeito desligado";
+            } catch (RuntimeException unavailable) {
+                releaseEffectsOnly();
+                directStatus = "Espacialização indisponível nesta saída.";
+            }
+            return;
         }
         if (!directDspEnabled || directDsp == null || host == null || Build.VERSION.SDK_INT < 28) return;
         try {
